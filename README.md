@@ -172,4 +172,7 @@ console.log("集线器：/hubs/message。连接失败。", err);
 
 2. 主页
 ![Image](https://github.com/CQJonnyLin/asp.net-core-signalr/blob/master/doc/Index.png)
-
+### 6、参考文档
++ [微软官方文档](https://docs.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-2.2)
++ [Vue中文文档](https://cn.vuejs.org/v2/guide/class-and-style.html)
++ http://jasonwatmore.com/post/2018/06/26/aspnet-core-21-simple-api-for-authentication-registration-and-user-management
