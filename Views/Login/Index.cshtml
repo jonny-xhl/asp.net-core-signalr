@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "登陆";
+}
+<link href="~/css/demo.css" rel="stylesheet" />
+<div id="app">
+    <content>
+        <form>
+            <input type="text" placeholder="请输入你的姓名" v-model="username" />
+            <input type="password" placeholder="请输入你的密码" v-model="password" />
+            <button type="button" @@click="Login">登陆</button>
+        </form>
+        <div class="OnlineList">
+            <label>测试账号：</label>
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>密码</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in testList">
+                        <td>{{index+1}}</td>
+                        <td>{{item.username}}</td>
+                        <td>{{item.password}}</td>
+                    </tr>
+                </tbody>               
+            </table>
+        </div>
+    </content>
+</div>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/dist/axios.js"></script>
+<script type="text/javascript">
+    "use strict"  
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            password: '',
+            testList: [
+                { username : "admin", password : "admin" },
+                { username : "user", password : "user" },
+                { username : "jonny", password : "jonny" },
+                { username : "james", password : "james" },
+                { username : "xhl", password : "xhl" },
+                { username : "luce", password : "luce" },
+                { username : "jack", password : "jack" },
+                { username : "rose", password : "rose" },
+                { username : "curry", password : "curry" }
+            ]
+        },
+        methods: {
+            Login() {
+                //登陆
+                axios.post("/Login/LoginOn", this.$data).then(res => {
+                    //保存登录信息到localStorage中
+                    localStorage.setItem('UserInfo', JSON.stringify(res.data));
+                    window.location.href = '/';//登陆成功后跳转到主页
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        }
+    });
+</script>
+
+

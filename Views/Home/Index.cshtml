@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+<link href="~/css/demo.css" rel="stylesheet" />
+<div id="app">
+    <div class="header">
+        <span>在线人数:{{count}}</span>
+    </div>
+    <content>
+        <div class="OnlineList">
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>ConnID</th>
+                        <th>姓名</th>
+                        <th>登陆时间</th>
+                    </tr>
+                </thead>
+                <tbody v-if="clients.length">
+                    <tr v-for="(item,index) in clients">
+                        <td>{{index+1}}</td>
+                        <td>{{item.connectionId}}</td>
+                        <td>{{item.identityName}}</td>
+                        <td>{{item.connecServerTime}}</td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td colspan="4" style="text-align:center">没有在线人员</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </content>
+</div>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/dist/axios.js"></script>
+<script type="text/javascript">
+    "use strict"  
+    let hubData = {
+        status: false,//用于标识是否已经授权
+        count: 0,
+        clients: []
+    };
+    let token = JSON.parse(localStorage.getItem("UserInfo")).token;
+    //通过HubConnectionBuilder创建连接对象
+    let connection = new signalR.HubConnectionBuilder().withUrl("/hubs/message", {
+        accessTokenFactory: () => token
+    }).build();
+    connection.on("updateCount", (count) => {
+        hubData.count = count;
+        //getclient();
+    });
+    //注册监听客户端GetCLient方法
+    connection.on("getClient", (values) => {
+        //插入前清空当前clients
+        hubData.clients = [];
+        hubData.clients=values;
+    });
+    //监听连接开始逻辑控制，catch捕获异常回调
+    connection.start().then((res) => {
+        console.log("集线器：/hubs/message。连接成功。", res);
+    }).catch((err) => {
+        console.log("集线器：/hubs/message。连接失败。", err);
+    });        
+        var vm = new Vue({
+            el: '#app',
+            data: hubData,
+            methods: {
+
+            }
+        });
+</script>
+
+
