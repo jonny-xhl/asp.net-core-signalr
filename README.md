@@ -169,5 +169,7 @@ console.log("集线器：/hubs/message。连接失败。", err);
 ### 5、项目运行
 1. 登陆界面
 ![Image](https://github.com/CQJonnyLin/asp.net-core-signalr/blob/master/doc/login.png)
+
 2. 主页
 ![Image](https://github.com/CQJonnyLin/asp.net-core-signalr/blob/master/doc/Index.png)
+
